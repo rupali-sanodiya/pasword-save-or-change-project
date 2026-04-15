@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Password</title>
+
+   <style>
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 350px;
+    text-align: center;
+}
+
+h2 { color: #333; margin-bottom: 10px; }
+p { color: #666; font-size: 14px; margin-bottom: 20px; }
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#toggleBtn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.btn-submit:hover { background-color: #218838; }
+
+.btn-return {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+}
+
+.btn-return:hover { color: #000; }
+
+#message {
+    font-size: 13px;
+    margin-bottom: 15px;
+    min-height: 18px;
+}
+   </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Create New Password</h2>
+        <p>Please enter a strong password for your account.</p>
+
+        <form id="passwordForm">
+            <div class="input-group">
+                <input type="password" id="password" placeholder="New Password" required>
+                <button type="button" id="toggleBtn">Show</button>
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            </div>
+
+            <div id="message"></div>
+
+            <button type="submit" class="btn-submit">Update Password</button>
+        </form>
+
+        <a href="index.html" class="btn-return">← Back to Home</a>
+    </div>
+
+    <script >
+
+        const passwordForm = document.getElementById('passwordForm');
+const passInput = document.getElementById('password');
+const confirmInput = document.getElementById('confirmPassword');
+const toggleBtn = document.getElementById('toggleBtn');
+const message = document.getElementById('message');
+
+// Password dikhane/chhupane ke liye
+toggleBtn.addEventListener('click', () => {
+    const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passInput.setAttribute('type', type);
+    toggleBtn.textContent = type === 'password' ? 'Show' : 'Hide';
+});
+
+// Form Submission logic
+passwordForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const passValue = passInput.value;
+    const confirmValue = confirmInput.value;
+
+    // Basic Validation
+    if (passValue.length < 8) {
+        message.style.color = "red";
+        message.textContent = "Password kam se kam 8 characters ka hona chahiye!";
+    } else if (passValue !== confirmValue) {
+        message.style.color = "red";
+        message.textContent = "Passwords match nahi kar rahe hain!";
+    } else {
+        message.style.color = "green";
+        message.textContent = "Success! Password update ho gaya.";
+        
+        // Yahan aap API call kar sakte hain database me save karne ke liye
+        console.log("New Password:", passValue);
+        
+        // Form reset
+        passwordForm.reset();
+    }
+});
+    </script>
+</body>
+</html>
